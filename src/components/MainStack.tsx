@@ -1,11 +1,37 @@
 import { BaseNavigationContainer } from '@react-navigation/core';
 import * as React from "react";
 import { stackNavigatorFactory } from "react-nativescript-navigation";
+import { createCustomTabNavigator } from '@/navigators/TabNav';
+import { counterModule } from "@/modules/counters";
+import { authModule } from "@/modules/auth";
 
-import { ScreenOne } from "./ScreenOne";
-import { ScreenTwo } from "./ScreenTwo";
-
+const isLogged = false;
 const StackNavigator = stackNavigatorFactory();
+const TabNavigator = createCustomTabNavigator();
+
+const userModules = [
+    ...counterModule
+];
+
+const HomeTabNavigator = () => (
+    <TabNavigator.Navigator
+        initialRouteName="counter.index"
+        androidTabsPosition="bottom"
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: "white",
+            },
+            headerShown: false,
+        }}
+    >
+        {userModules.map((_module, index) => (
+            <TabNavigator.Screen
+                key={index}
+                {..._module}
+            />
+        ))}
+    </TabNavigator.Navigator>
+)
 
 /**
  * The main stack navigator for the whole app.
@@ -13,22 +39,20 @@ const StackNavigator = stackNavigatorFactory();
 export const MainStack = () => (
     <BaseNavigationContainer>
         <StackNavigator.Navigator
-            initialRouteName="Screen One"
-            screenOptions={{
-                headerStyle: {
-                    backgroundColor: "white",
-                },
-                headerShown: true,
-            }}
+            screenOptions={{ headerShown: false }}
         >
-            <StackNavigator.Screen
-                name="One"
-                component={ScreenOne}
-            />
-            <StackNavigator.Screen
-                name="Two"
-                component={ScreenTwo}
-            />
+            {!isLogged ?
+                authModule.map((_module, index) => (
+                    <StackNavigator.Screen
+                        key={index}
+                        {..._module}
+                    />
+                )) : (
+                <StackNavigator.Screen
+                    name="Home"
+                    component={HomeTabNavigator}
+                />
+            )}
         </StackNavigator.Navigator>
     </BaseNavigationContainer>
 );
