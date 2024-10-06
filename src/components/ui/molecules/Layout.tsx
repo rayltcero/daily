@@ -53,8 +53,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             className="h-full"
             backgroundColor="#EDF2F4"
         >
-            {mainContent}
-
             <gridLayout
                 row={1}
                 rows={"*, auto"}
@@ -72,6 +70,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 />
                 {bottomContent}
             </gridLayout>
+
+            {mainContent}
         </gridLayout>
     );
 };
