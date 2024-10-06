@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { ViewAttributes, StyleSheet } from 'react-nativescript';
 
 type ButtonVariant = "primary" | "secondary" | "tertiary";

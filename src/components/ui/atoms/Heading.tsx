@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { ViewAttributes } from 'react-nativescript';
 
 type Level = 1 | 2 | 3 | 4 | 5 | 6;

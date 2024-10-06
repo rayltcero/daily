@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import type { ViewBase } from "@nativescript/core";
 
 interface ContainerProps {
