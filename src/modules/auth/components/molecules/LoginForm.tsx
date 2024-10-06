@@ -1,26 +1,25 @@
 import React from "react";
 import { Input, FormLabel, Button } from "@/components/ui/atoms";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { ViewAttributes } from 'react-nativescript';
 import { CoreTypes, PropertyChangeData } from "@nativescript/core";
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {z} from 'zod';
-import { phoneRegex } from "../../utils";
 
 const schema = z.object({
-    phone: z.string().min(10).max(10).regex(phoneRegex, 'Invalid phone number'),
+    username: z.string().min(3, 'Username must be at least 3 characters'),
     password: z.string().min(6, 'Password must be at least 6 characters')
 });
 
 interface LoginFormProps extends ViewAttributes {
-    onSubmit: ({ phone, password }) => void;
+    onSubmit: ({ username, password }) => void;
 };
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...viewAttributes }) => {
     const { control, handleSubmit } = useForm({
         defaultValues: {
-            phone: '',
+            username: '',
             password: ''
         },
         resolver: zodResolver(schema)
@@ -33,17 +32,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...vi
             className={localClassName}
             {...viewAttributes}
         >
-            <FormLabel text="Phone" />
+            <FormLabel text="Username" />
             <Controller
                 control={control}
-                name="phone"
+                name="username"
                 render={({ field, fieldState }) => (
                     <>
                         <Input
                             value={field.value}
                             onTextChange={(args: PropertyChangeData) => field.onChange(args.value)}
                             onBlur={field.onBlur}
-                            placeholder="Phone"
+                            placeholder="Username"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
                             keyboardType={CoreTypes.KeyboardType.phone}
                         />
