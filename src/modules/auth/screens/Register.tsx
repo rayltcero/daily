@@ -5,6 +5,7 @@ import { MainStackParamList } from '@/NavigationParamList';
 import { Container, Heading } from '@/components/ui/atoms';
 import { Layout } from '@/components/ui/molecules';
 import { RegisterForm } from '../components/molecules';
+import { useAuthController } from '../controllers/auth.controller';
 
 interface RegisterScreenProps {
     route: RouteProp<MainStackParamList, 'Register'>,
@@ -15,6 +16,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
     route,
     navigation
 }) => {
+    const { register } = useAuthController();
 
     return (
         <Layout>
@@ -28,7 +30,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                     <gridLayout
                         rows="auto, auto, auto, auto"
                         columns='1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*'
-                        className='mt-16'
+                        className='mt-4'
                     >
 
                         <Heading
@@ -53,8 +55,8 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                             col={1}
                             colSpan={13}
                             row={2}
-                            onSubmit={() => console.log('click')}
-                            className='mt-20'
+                            onSubmit={register}
+                            className='mt-6'
                         />
                     </gridLayout>
                 </Container>

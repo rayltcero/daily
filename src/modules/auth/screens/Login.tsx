@@ -30,9 +30,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                     <gridLayout
                         rows="auto, auto, auto, auto"
                         columns='1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*'
-                        className='mt-16'
+                        className='mt-4'
                     >
-
                         <Heading
                             content="Login"
                             weight="medium"
