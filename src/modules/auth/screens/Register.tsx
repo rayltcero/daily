@@ -16,7 +16,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
     route,
     navigation
 }) => {
-    const { register } = useAuthController();
+    const { register, isLoading } = useAuthController({ route, navigation });
 
     return (
         <Layout>
@@ -32,7 +32,6 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                         columns='1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*, 8, 1*'
                         className='mt-4'
                     >
-
                         <Heading
                             content="Register"
                             weight="medium"
@@ -56,25 +55,28 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({
                             colSpan={13}
                             row={2}
                             onSubmit={register}
+                            isLoading={isLoading}
                             className='mt-6'
                         />
                     </gridLayout>
                 </Container>
             </Layout.mainContent>
             <Layout.bottomContent>
-            <label
-                className="text-center font-normal font-serif mb-8 text-black text-base"
-                onTap={() => navigation.navigate('Login')}
-            >
-                    <formattedString>
-                        <span text="Don't have an account? " />
-                        <span
-                            textDecoration='underline'
-                            text="Sign Up"
-                            className='text-accent'
-                        />
-                    </formattedString>
-                </label>
+                <flexboxLayout
+                    className='text-center justify-center font-normal font-serif text-base'
+                >
+                    <label
+                        className=" mb-8 text-black"
+                        text="Already have an account?"
+                    />
+
+                    <label
+                        className=" mb-8 text-accent ml-1"
+                        text="Login"
+                        textDecoration='underline'
+                        onTap={() => navigation.navigate('Login')}
+                    />
+                </flexboxLayout>
             </Layout.bottomContent>
         </Layout>
     );

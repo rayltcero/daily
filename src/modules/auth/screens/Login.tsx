@@ -6,7 +6,7 @@ import { MainStackParamList } from '@/NavigationParamList';
 import { Container, Heading } from '@/components/ui/atoms';
 import { Layout } from '@/components/ui/molecules';
 import { LoginForm } from '../components/molecules';
-
+import { useAuthController } from '../controllers/auth.controller';
 
 interface LoginScreenProps {
     route: RouteProp<MainStackParamList, 'Login'>,
@@ -17,6 +17,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
     route,
     navigation
 }) => {
+    const { login, isLoading } = useAuthController({ route, navigation });
 
     return (
         <Layout>
@@ -48,26 +49,29 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
                         />
                         <LoginForm
                             style={styles.form}
-                            onSubmit={() => console.log('click')}
+                            onSubmit={login}
+                            isLoading={isLoading}
                             className='mt-20'
                         />
                     </gridLayout>
                 </Container>
             </Layout.mainContent>
             <Layout.bottomContent>
-                <label
-                    className="text-center font-normal font-serif mb-8 text-black text-base"
-                    onTap={() => navigation.navigate('Register')}
+            <flexboxLayout
+                    className='text-center justify-center font-normal font-serif text-base'
                 >
-                    <formattedString>
-                        <span text="Don't have an account? " />
-                        <span
-                            textDecoration='underline'
-                            text="Sign Up"
-                            className='text-accent'
-                        />
-                    </formattedString>
-                </label>
+                    <label
+                        className=" mb-8 text-black"
+                        text="Don't have an account?"
+                    />
+
+                    <label
+                        className=" mb-8 text-accent ml-1"
+                        text="Sign Up"
+                        textDecoration='underline'
+                        onTap={() => navigation.navigate('Register')}
+                    />
+                </flexboxLayout>
             </Layout.bottomContent>
         </Layout>
     );

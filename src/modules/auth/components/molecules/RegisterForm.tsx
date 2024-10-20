@@ -23,9 +23,10 @@ const schema = z.object({
 
 interface RegisterFormProps extends ViewAttributes {
     onSubmit: ({ name, username, phone, birthdate, password }) => void;
+    isLoading?: boolean;
 };
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className, ...viewAttributes }) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className, isLoading, ...viewAttributes }) => {
     const { control, handleSubmit } = useForm({
         defaultValues: {
             name: '',
@@ -56,6 +57,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                             onBlur={field.onBlur}
                             placeholder="Name"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
+                            isEnabled={!isLoading}
                         />
                         {fieldState.error && <label className="text-red-700 mb-2 text-xs" text={fieldState.error.message} textWrap={true} />}
                     </>
@@ -73,6 +75,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                             onBlur={field.onBlur}
                             placeholder="Username"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
+                            isEnabled={!isLoading}
                         />
                         {fieldState.error && <label className="text-red-700 mb-2 text-xs" text={fieldState.error.message} textWrap={true} />}
                     </>
@@ -90,6 +93,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                             onBlur={field.onBlur}
                             placeholder="Birthdate"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
+                            isEnabled={!isLoading}
                             keyboardType={CoreTypes.KeyboardType.datetime}
                         />
                         {fieldState.error && <label className="text-red-700 mb-2 text-xs" text={fieldState.error.message} textWrap={true} />}
@@ -108,6 +112,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                             onBlur={field.onBlur}
                             placeholder="Phone"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
+                            isEnabled={!isLoading}
                             keyboardType={CoreTypes.KeyboardType.phone}
                         />
                         {fieldState.error && <label className="text-red-700 mb-2 text-xs" text={fieldState.error.message} textWrap={true} />}
@@ -126,6 +131,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                             onBlur={field.onBlur}
                             placeholder="Password"
                             className={cn('mb-6', { "border-red-700 mb-1": fieldState.error })}
+                            isEnabled={!isLoading}
                             secure={true}
                         />
                         {fieldState.error && <label className="text-red-500 mb-6 text-xs" text={fieldState.error.message} textWrap={true} />}
@@ -136,6 +142,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, className,
                 content="Register"
                 onTap={handleSubmit(onSubmit)}
                 variant="primary"
+                isLoading={isLoading}
             />
         </flexboxLayout>
     )

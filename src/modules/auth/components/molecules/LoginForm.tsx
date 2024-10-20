@@ -14,9 +14,10 @@ const schema = z.object({
 
 interface LoginFormProps extends ViewAttributes {
     onSubmit: ({ username, password }) => void;
+    isLoading?: boolean;
 };
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...viewAttributes }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, className, ...viewAttributes }) => {
     const { control, handleSubmit } = useForm({
         defaultValues: {
             username: '',
@@ -44,7 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...vi
                             onBlur={field.onBlur}
                             placeholder="Username"
                             className={cn('mb-2', { "border-red-700 mb-1": fieldState.error })}
-                            keyboardType={CoreTypes.KeyboardType.phone}
+                            isEnabled={!isLoading}
                         />
                         {fieldState.error && <label className="text-red-700 mb-2 text-xs" text={fieldState.error.message} textWrap={true} />}
                     </>
@@ -63,6 +64,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...vi
                             placeholder="Password"
                             className={cn('mb-6', { "border-red-700 mb-1": fieldState.error })}
                             secure={true}
+                            isEnabled={!isLoading}
                         />
                         {fieldState.error && <label className="text-red-500 mb-6 text-xs" text={fieldState.error.message} textWrap={true} />}
                     </>
@@ -72,6 +74,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, className, ...vi
                 content="Login"
                 onTap={handleSubmit(onSubmit)}
                 variant="primary"
+                isLoading={isLoading}
             />
         </flexboxLayout>
     );
