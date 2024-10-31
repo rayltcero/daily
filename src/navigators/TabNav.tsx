@@ -9,6 +9,8 @@ import {
 import { TabView, isAndroid, EventData } from '@nativescript/core';
 import { NSVElement } from 'react-nativescript';
 import { BottomNav } from '../components/ui/molecules/BottomNav';
+import { Layout } from '@/components/ui/molecules';
+import { Container } from '@/components/ui/atoms/Container';
 
 interface TabNavProps {
     children: ReactNode;
@@ -61,40 +63,44 @@ export const TabNav = ({ children, screenOptions, initialRouteName }: TabNavProp
 
     return (
         <NavigationHelpersContext.Provider value={navigation}>
-            <flexboxLayout
-                className='flex-col'
-            >
-                <tabView
-                    ref={tabViewRef}
-                    onLoaded={onTabsLoaded}
-                    onSelectedIndexChange={onSelectedIndexChange}
-                >
-                    {state.routes.map((route, index) => (
-                        <tabViewItem
-                            key={index}
-                            title={route.name}
-                            nodeRole='items'
-                        >
-                            {descriptors[route.key].render()}
-                        </tabViewItem>
-                    ))}
-                </tabView>
-                <BottomNav
-                    items={state.routes.map((route) => ({
-                        icon: descriptors[route.key].options.iconSource,
-                        label: descriptors[route.key].options.title,
-                        onTap: () => {
-                            const index = state.routes.findIndex((r) => r.key === route.key);
+            <Layout>
+                <Layout.mainContent>
+                    <tabView
+                        ref={tabViewRef}
+                        onLoaded={onTabsLoaded}
+                        onSelectedIndexChange={onSelectedIndexChange}
+                    >
+                        {state.routes.map((route, index) => (
+                            <tabViewItem
+                                key={index}
+                                title={route.name}
+                                nodeRole='items'
+                            >
+                                {descriptors[route.key].render()}
+                            </tabViewItem>
+                        ))}
+                    </tabView>
+                </Layout.mainContent>
+                <Layout.bottomContent>
+                    <Container>
+                        <BottomNav
+                            items={state.routes.map((route) => ({
+                                icon: descriptors[route.key].options.iconSource,
+                                label: descriptors[route.key].options.title,
+                                onTap: () => {
+                                    const index = state.routes.findIndex((r) => r.key === route.key);
 
-                            if (index !== -1) {
-                                if (tabViewRef.current) {
-                                    const tabView = tabViewRef.current?.nativeView as TabView;
-                                    tabView.selectedIndex = index;
+                                    if (index !== -1) {
+                                        if (tabViewRef.current) {
+                                            const tabView = tabViewRef.current?.nativeView as TabView;
+                                            tabView.selectedIndex = index;
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                }))} />
-            </flexboxLayout>
+                        }))} />
+                    </Container>
+                </Layout.bottomContent>
+            </Layout>
         </NavigationHelpersContext.Provider>
     );
 }
