@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { isAndroid } from "@nativescript/core";
+import { isAndroid, EventData, ContentView } from "@nativescript/core";
+import { NSVElement } from "react-nativescript";
 
 interface BottomNavProps {
     items: Array<{
@@ -17,34 +18,74 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     const iosShadow = "0 10 15 -3 rgb(0 0 0 / 0.15), 0 4 6 -4 rgb(0 0 0 / 0.15)";
     const androidShadow = "0 10 15 -3 rgb(0 0 0 / 0.1), 0 4 6 -4 rgb(0 0 0 / 0.1)";
 
+    const [selected, setSelected] = useState(0);
+    const indicatorRef = useRef<NSVElement<ContentView>>(null);
+
+    const onTapAnimation = (param): Promise<void> => {
+        const { view, index } = param;
+        const indicator = indicatorRef.current?.nativeView as ContentView;
+        const rawWidth = indicator.getActualSize().width;
+
+        setSelected(index);
+
+        indicator.animate({
+            translate: { x: (rawWidth * index), y: 0 },
+            duration: 300,
+            curve: "easeInOut",
+        });
+
+        view.animate({
+            scale: { x: 0.8, y: 0.8 },
+            duration: 200,
+            curve: "easeIn",
+        });
+
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                view.animate({
+                    scale: { x: 1, y: 1 },
+                    duration: 200,
+                    curve: "easeOut",
+                });
+
+                resolve();
+            }, 200);
+        });
+    };
+
+    const widthClass = `w-1/${items.length}`;
+
     return (
-        <flexboxLayout
-            className="mt-auto mb-4 bg-white container px-4 py-2 mx-4 md:mx-auto rounded-lg w-full h-36"
+        <wrapLayout
+            className="bg-gray-200 mb-4 pt-4 pb-2.5 rounded-lg"
             boxShadow={isAndroid ? androidShadow : iosShadow}
             {...ViewBase}
         >
             {items.map((item, index) => (
-                <stackLayout
+                <contentView
                     key={index}
-                    onTap={item.onTap}
-                    className={cn("w-1/3 text-center", {
-                        "bg-slate-200 rounded-full": index === 0,
-                        "bg-red-200 rounded-full": index === 1,
-                        "bg-green-200 rounded-full": index === 2
-                    })}
+                    onTap={(Event: EventData) => {
+                        onTapAnimation({view: Event.object, index })
+                            .then(() => item.onTap());
+                    }}
+                    className={cn(widthClass)}
                 >
-                    <image
+                    <svgView
                         src={item.icon}
+                        stretch="aspectFit"
                         className="w-8 h-8"
-                        loadMode="async"
                     />
-                    <label
-                        className="text-slate-900 text-xs"
-                    >
-                        {item.label}
-                    </label>
-                </stackLayout>
+                </contentView>
             ))}
-        </flexboxLayout>
+            {/* indicator bar bellow icons */}
+            <contentView
+                className={cn(["h-1 mt-1", widthClass])}
+                ref={indicatorRef}
+            >
+                <contentView
+                    className="bg-gray-900 h-full w-10 rounded-t-lg mx-auto"
+                />
+            </contentView>
+        </wrapLayout>
     );
 };
