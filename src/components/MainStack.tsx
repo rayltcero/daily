@@ -2,9 +2,11 @@ import { BaseNavigationContainer } from '@react-navigation/core';
 import * as React from "react";
 import { stackNavigatorFactory } from "react-nativescript-navigation";
 import { createCustomTabNavigator } from '@/navigators/TabNav';
-import { counterModule } from "@/modules/counters";
 import { homeRoutes } from '../modules/home';
 import { authModule } from "@/modules/auth";
+import { exploreRoutes } from "@/modules/explore";
+import { habitsRoutes } from "@/modules/habits";
+import { accountsRoutes } from "@/modules/accounts";
 import { AuthContext } from '@/modules/auth/contexts/auth';
 import { ApplicationSettings } from "@nativescript/core";
 
@@ -13,7 +15,9 @@ const TabNavigator = createCustomTabNavigator();
 
 const userModules = [
     ...homeRoutes,
-    ...counterModule
+    ...exploreRoutes,
+    ...habitsRoutes,
+    ...accountsRoutes
 ];
 
 const HomeTabNavigator = () => (
