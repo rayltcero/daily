@@ -8,12 +8,13 @@ interface ContainerProps {
 
 export const Container: React.FC<ContainerProps> = ({ children, ...viewBase }) => {
     const { className } = viewBase as ViewBase;
-    const containerClasses = cn("container mx-auto px-4 flex-col", className);
+    const containerClasses = cn("mx-auto px-4 flex-col", className);
 
     return (
         <flexboxLayout
             {...viewBase}
             className={containerClasses}
+            alignItems="flex-start"
         >
             {children}
         </flexboxLayout>
