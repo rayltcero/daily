@@ -20,6 +20,8 @@ export const Avatar: React.FC<AvatarProps> = ({ size = "md", className, ...viewA
             className={localClassName}
             roundAsCircle={true}
             aspectRatio={1}
+            stretch="aspectFit"
+            verticalAlignment="top"
             {...viewAttributes}
         />
     );
